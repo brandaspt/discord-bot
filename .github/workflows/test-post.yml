@@ -1,14 +1,12 @@
-name: Daily Discord Post
+name: Test Discord Post
 
 on:
-  schedule:
-    - cron: "0 7 * * *" # 9:00 AM Stockholm time (CEST, UTC+2) — update to 0 8 in winter (CET, UTC+1)
-  workflow_dispatch: # allows manual trigger from GitHub UI
+  workflow_dispatch: # manual trigger only
 
 jobs:
   post:
     runs-on: ubuntu-latest
-    environment: production
+    environment: test
     steps:
       - uses: actions/checkout@v4
 
