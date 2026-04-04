@@ -1,0 +1,26 @@
+name: Daily Discord Post
+
+on:
+  schedule:
+    - cron: "0 7 * * *" # 9:00 AM Stockholm time (CEST, UTC+2) — update to 0 8 in winter (CET, UTC+1)
+  workflow_dispatch: # allows manual trigger from GitHub UI
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - run: npm ci
+
+      - run: npm run build
+
+      - run: node dist/index.js
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
