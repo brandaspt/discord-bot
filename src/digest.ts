@@ -40,7 +40,7 @@ async function fetchLatestRelease(): Promise<GitHubRelease> {
   return { tagName, body, publishedAt }
 }
 
-export async function summarizeClaudeCodeReleases(): Promise<string> {
+export async function summarizeClaudeCodeLatestFeatures(): Promise<string> {
   const { tagName, body, publishedAt } = await fetchLatestRelease()
 
   const apiKey = getEnvVar("GEMINI_API_KEY")

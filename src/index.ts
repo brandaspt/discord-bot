@@ -1,10 +1,10 @@
-import { summarizeClaudeCodeReleases } from "./digest.ts"
+import { summarizeClaudeCodeLatestFeatures } from "./digest.ts"
 import { postToDiscord } from "./discord.ts"
 
 async function main(): Promise<void> {
   console.log(`Searching for Claude Code releases ...`)
 
-  const message = await summarizeClaudeCodeReleases()
+  const message = await summarizeClaudeCodeLatestFeatures()
 
   await postToDiscord(message)
   console.log("Posted successfully.")
