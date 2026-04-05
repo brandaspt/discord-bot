@@ -1,0 +1,19 @@
+{
+  "tasks": {
+    "start": "deno run --env-file=.env --allow-net --allow-env src/index.ts",
+    "dev": "deno run --env-file=.env --allow-net --allow-env --watch src/index.ts",
+    "test": "deno test --allow-net --allow-env src/"
+  },
+  "imports": {
+    "@google/genai": "npm:@google/genai@^1.0.0",
+    "asserts": "jsr:@std/assert",
+    "mock": "jsr:@std/testing/mock"
+  },
+  "compilerOptions": {
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true
+  }
+}

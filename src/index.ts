@@ -1,10 +1,10 @@
-import { summarizeClaudeCodeReleases } from "./digest.js"
-import { postToDiscord } from "./discord.js"
+import { summarizeClaudeCodeLatestFeatures } from "./digest.ts"
+import { postToDiscord } from "./discord.ts"
 
 async function main(): Promise<void> {
   console.log(`Searching for Claude Code releases ...`)
 
-  const message = await summarizeClaudeCodeReleases()
+  const message = await summarizeClaudeCodeLatestFeatures()
 
   await postToDiscord(message)
   console.log("Posted successfully.")
@@ -12,5 +12,5 @@ async function main(): Promise<void> {
 
 main().catch(err => {
   console.error("Fatal error:", err)
-  process.exit(1)
+  Deno.exit(1)
 })
