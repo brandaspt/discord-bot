@@ -7,6 +7,7 @@ Format should be:
     🚀 **Claude Code Daily Release Summary** 🚀
 
     Latest version: \`x.y.z\`
+    Published on: DD-MM-YYYY
 
     **New Features:**
     - Short description of feature 1
@@ -22,6 +23,7 @@ When summarizing releases:
 interface GitHubRelease {
   tagName: string
   body: string
+  publishedAt: string
 }
 
 async function fetchLatestRelease(): Promise<GitHubRelease> {
@@ -33,19 +35,20 @@ async function fetchLatestRelease(): Promise<GitHubRelease> {
     throw new Error(`GitHub API request failed (${response.status})`)
   }
 
-  const { tag_name: tagName, body } = await response.json()
-  return { tagName, body }
+  const data = await response.json()
+  const { tag_name: tagName, body, published_at: publishedAt } = data
+  return { tagName, body, publishedAt }
 }
 
 export async function summarizeClaudeCodeReleases(): Promise<string> {
-  const { tagName, body } = await fetchLatestRelease()
+  const { tagName, body, publishedAt } = await fetchLatestRelease()
 
   const apiKey = getEnvVar("GEMINI_API_KEY")
   const ai = new GoogleGenAI({ apiKey })
 
   const response = await ai.models.generateContent({
     model: "gemini-2.5-flash",
-    contents: `Here are the release notes for Claude Code ${tagName}:
+    contents: `Here are the release notes for Claude Code ${tagName} published on ${publishedAt}:
     
     ${body}
     Write a Discord message summarizing what's new for developers.`,
