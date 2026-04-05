@@ -1,4 +1,4 @@
-import { getEnvVar } from "./utils.js"
+import { getEnvVar } from "./utils.ts"
 
 export async function postToDiscord(message: string): Promise<void> {
   const webhookUrl = getEnvVar("DISCORD_WEBHOOK_URL")

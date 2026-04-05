@@ -1,5 +1,5 @@
 import { GoogleGenAI } from "@google/genai"
-import { getEnvVar } from "./utils.js"
+import { getEnvVar } from "./utils.ts"
 
 const SYSTEM_PROMPT = `You are a technical writer posting daily Claude Code release summaries to a developer Discord server.
 
