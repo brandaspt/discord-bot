@@ -6,6 +6,10 @@ async function main(): Promise<void> {
 
   const message = await summarizeClaudeCodeLatestFeatures()
 
+  if (message === null) {
+    return
+  }
+
   await postToDiscord(message)
   console.log("Posted successfully.")
 }
