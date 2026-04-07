@@ -40,8 +40,19 @@ async function fetchLatestRelease(): Promise<GitHubRelease> {
   return { tagName, body, publishedAt }
 }
 
-export async function summarizeClaudeCodeLatestFeatures(): Promise<string> {
+function isFromYesterday(publishedAt: string): boolean {
+  const releaseDate = new Date(publishedAt).toISOString().slice(0, 10)
+  const yesterday = new Date(Date.now() - 86_400_000).toISOString().slice(0, 10)
+  return releaseDate === yesterday
+}
+
+export async function summarizeClaudeCodeLatestFeatures(): Promise<string | null> {
   const { tagName, body, publishedAt } = await fetchLatestRelease()
+
+  if (!isFromYesterday(publishedAt)) {
+    console.log(`Latest release ${tagName} published on ${publishedAt} is not from yesterday, skipping.`)
+    return null
+  }
 
   const apiKey = getEnvVar("GEMINI_API_KEY")
   const ai = new GoogleGenAI({ apiKey })

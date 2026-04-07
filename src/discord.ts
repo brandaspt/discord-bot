@@ -2,10 +2,12 @@ import { getEnvVar } from "./utils.ts"
 
 export async function postToDiscord(message: string): Promise<void> {
   const webhookUrl = getEnvVar("DISCORD_WEBHOOK_URL")
+  const threadId = Deno.env.get("DISCORD_THREAD_ID")
+  const url = threadId ? `${webhookUrl}?thread_id=${threadId}` : webhookUrl
 
   const content = message.length > 1950 ? message.slice(0, 1947) + "..." : message
 
-  const response = await fetch(webhookUrl, {
+  const response = await fetch(url, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ content })
