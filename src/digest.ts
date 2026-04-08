@@ -40,17 +40,18 @@ async function fetchLatestRelease(): Promise<GitHubRelease> {
   return { tagName, body, publishedAt }
 }
 
-function isFromYesterday(publishedAt: string): boolean {
+function isRecent(publishedAt: string): boolean {
   const releaseDate = new Date(publishedAt).toISOString().slice(0, 10)
+  const today = new Date().toISOString().slice(0, 10)
   const yesterday = new Date(Date.now() - 86_400_000).toISOString().slice(0, 10)
-  return releaseDate === yesterday
+  return releaseDate === today || releaseDate === yesterday
 }
 
 export async function summarizeClaudeCodeLatestFeatures(): Promise<string | null> {
   const { tagName, body, publishedAt } = await fetchLatestRelease()
 
-  if (!isFromYesterday(publishedAt)) {
-    console.log(`Latest release ${tagName} published on ${publishedAt} is not from yesterday, skipping.`)
+  if (!isRecent(publishedAt)) {
+    console.log(`Latest release ${tagName} published on ${publishedAt} is not from today or yesterday, skipping.`)
     return null
   }
 
