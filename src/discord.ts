@@ -2,7 +2,7 @@ import { getEnvVar } from "./utils.ts"
 
 export async function postToDiscord(message: string): Promise<void> {
   const webhookUrl = getEnvVar("DISCORD_WEBHOOK_URL")
-  const threadId = Deno.env.get("DISCORD_THREAD_ID")
+  const threadId = getEnvVar("DISCORD_THREAD_ID")
   if (threadId) {
     console.log(`Posting to Discord thread ${threadId}...`)
   } else {
