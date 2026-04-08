@@ -63,17 +63,16 @@ export async function summarizeClaudeCodeLatestFeatures(): Promise<string | null
     contents: `Here are the release notes for Claude Code ${tagName} published on ${publishedAt}:
     
     ${body}
-    Write a Discord message summarizing what's new for developers.`,
+    Write a Discord message summarizing what's new for developers. If there are no new features, just return an empty string.
+    Remember to use the format and style I asked for in the system prompt.`,
     config: {
       systemInstruction: SYSTEM_PROMPT
     }
   })
 
   const text = response.text?.trim()
-
   if (!text) {
-    throw new Error("Gemini returned no text content")
+    console.log(`No new features in release ${tagName}, skipping.`)
   }
-
-  return text
+  return text || null
 }
