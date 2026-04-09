@@ -1,5 +1,5 @@
 import { GoogleGenAI } from "@google/genai"
-import { getEnvVar } from "./utils.ts"
+import { getEnvVar, withRetry } from "./utils.ts"
 
 const SYSTEM_PROMPT = `You are a technical writer posting daily Claude Code release summaries to a developer Discord server.
 
@@ -58,7 +58,7 @@ export async function summarizeClaudeCodeLatestFeatures(): Promise<string | null
   const apiKey = getEnvVar("GEMINI_API_KEY")
   const ai = new GoogleGenAI({ apiKey })
 
-  const response = await ai.models.generateContent({
+  const response = await withRetry(() => ai.models.generateContent({
     model: "gemini-2.5-flash",
     contents: `Here are the release notes for Claude Code ${tagName} published on ${publishedAt}:
     
@@ -68,7 +68,7 @@ export async function summarizeClaudeCodeLatestFeatures(): Promise<string | null
     config: {
       systemInstruction: SYSTEM_PROMPT
     }
-  })
+  }))
 
   const text = response.text?.trim()
   if (!text) {
